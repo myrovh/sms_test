@@ -1,7 +1,6 @@
 package main
 
 import (
-  "bytes"
   "crypto/hmac"
   "crypto/sha256"
   "encoding/base64"
@@ -25,6 +24,7 @@ type config struct {
 }
 
 var cfg config
+var client = &http.Client{}
 
 func main() {
   // parse flags
@@ -96,9 +96,7 @@ func httpAuth(r *http.Request) (err error) {
 // doSms TODO add helper util to close out http response with error message if function fails before expected return
 // test function to try and get communication between program and sms global
 func doSms(w http.ResponseWriter, r *http.Request) {
-  client := &http.Client{}
-
-  req, err := http.NewRequest("GET", "https://api.smsglobal.com/v2/sms/", bytes.NewReader(make([]byte, 100)))
+  req, err := http.NewRequest("GET", "https://api.smsglobal.com/v2/sms/", nil)
   if err != nil {
     log.Error().Err(err).Msg("failure to generate request")
     return
