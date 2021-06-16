@@ -7,6 +7,7 @@ import (
   "github.com/justinas/alice"
   "github.com/myrovh/sms-sender/api/endpoints"
   "github.com/myrovh/sms-sender/api/variables"
+  "github.com/rs/cors"
   "github.com/rs/zerolog"
   "github.com/rs/zerolog/hlog"
   "github.com/rs/zerolog/log"
@@ -50,8 +51,11 @@ func main() {
   userAgentMiddleware := hlog.UserAgentHandler("user_agent")
   refererMiddleware := hlog.RefererHandler("referer")
   requestIDMiddleware := hlog.RequestIDHandler("req_id", "Request-Id")
+  corsMiddleware := cors.New(cors.Options{
+    AllowedOrigins: variables.Cfg.AllowedOrigins,
+  }).Handler
 
-  chain := alice.New(zerologMiddleware, accessLogMiddleware, remoteAddrHandlerMiddleware, userAgentMiddleware, refererMiddleware, requestIDMiddleware)
+  chain := alice.New(zerologMiddleware, accessLogMiddleware, remoteAddrHandlerMiddleware, userAgentMiddleware, refererMiddleware, requestIDMiddleware, corsMiddleware)
 
   // start http server
   log.Info().Int("port", *port).Msg("listening")
