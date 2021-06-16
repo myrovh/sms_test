@@ -82,7 +82,7 @@ func main() {
 func httpAuth(r *http.Request) (err error) {
   timestamp := time.Now().Unix()
   nonce := rand.Int31()
-  macString := fmt.Sprintf("%d\n%d\n%s\n%s\n%s\n433\n\n", timestamp, nonce, r.Method, r.URL.Path, r.URL.Host)
+  macString := fmt.Sprintf("%d\n%d\n%s\n%s\n%s\n443\n\n", timestamp, nonce, r.Method, r.URL.Path, r.URL.Host)
   fmt.Printf("%s", macString)
 
   h := hmac.New(sha256.New, []byte(cfg.ApiSecret))
