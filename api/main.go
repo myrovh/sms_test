@@ -19,7 +19,7 @@ import (
 func main() {
   // parse flags
   debug := flag.Bool("debug", false, "sets log level to debug")
-  port := flag.Int("port", 8080, "sets port to listen on")
+  port := flag.Int("port", 9090, "sets port to listen on")
   human := flag.Bool("human", false, "if true logger outputs in human readable format")
   flag.Parse()
 
