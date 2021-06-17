@@ -7,11 +7,13 @@
     "build": "snowpack build"
   },
   "devDependencies": {
+    "@snowpack/plugin-dotenv": "^2.1.0",
     "@snowpack/plugin-postcss": "^1.4.1",
     "@snowpack/plugin-typescript": "^1.2.1",
     "@tailwindcss/forms": "^0.3.3",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.7",
+    "@types/snowpack-env": "^2.3.3",
     "postcss": "^8.3.2",
     "postcss-cli": "^8.3.1",
     "snowpack": "^3.5.7",
@@ -21,7 +23,7 @@
   "dependencies": {
     "@headlessui/react": "^1.2.0",
     "@hookform/resolvers": "^2.5.2",
-    "computed-types": "^1.7.0",
+    "computed-types": "1.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.8.8",

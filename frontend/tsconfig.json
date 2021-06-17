@@ -17,6 +17,7 @@
     "noEmit": true,
     /* Additional Options */
     "strict": true,
+    "types": ["snowpack-env"],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,

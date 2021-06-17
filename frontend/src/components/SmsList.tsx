@@ -4,14 +4,41 @@ import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-export const SmsList = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const { data } = useSWR(
-    isOpen ? "http://localhost:8080/api/message?limit=10" : null,
+type Message = {
+  id: number;
+  outgoing_id: number;
+  origin: string;
+  destination: string;
+  message: string;
+};
+
+type List = {
+  limit: number;
+  messages: Message[];
+  ofset: number;
+  total: number;
+};
+
+function useSmsList(fetch: boolean, limit: number) {
+  const { data, error } = useSWR<List>(
+    fetch ? `http://${import.meta.env.SNOWPACK_PUBLIC_API_URL}/api/message?limit=${limit}` : null,
     fetcher
   );
 
-  console.log(data);
+ 
+
+  return {
+    list: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+
+export const SmsList = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const { list } = useSmsList(isOpen, 10);
+
+  console.log(list);
 
   return (
     <>
@@ -23,16 +50,33 @@ export const SmsList = () => {
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="z-50 max-w-sm mx-auto bg-white rounded">
-            <Dialog.Title>Last 10 Messages</Dialog.Title>
-            <Dialog.Description>Some stuff</Dialog.Description>
-            <div>test</div>
-            <input></input>
+            <Dialog.Title className="text-title">
+              Last 10 Messages
+            </Dialog.Title>
+            <div className="grid grid-cols-1 py-5 divide-y divide-gray-100">
+              {list?.messages.map((message) => (
+                <div key={message.id} className="px-5 py-1">
+                  <p className="text-secondary">
+                    {message.origin}&emsp;&emsp;&emsp;🠖&emsp;&emsp;&emsp;
+                    {message.destination}
+                  </p>
+                  <p>message: {message.message}</p>
+                </div>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="m-5 btn-blue"
+            >
+              Close
+            </button>
           </div>
         </div>
       </Dialog>
       <button
         type="button"
-        className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        className="btn-gray"
         onClick={() => setIsOpen(!isOpen)}
       >
         View SMS History
