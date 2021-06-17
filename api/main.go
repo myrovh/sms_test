@@ -23,10 +23,6 @@ func main() {
   human := flag.Bool("human", false, "if true logger outputs in human readable format")
   flag.Parse()
 
-  if err := env.Parse(&variables.Cfg); err != nil {
-    log.Fatal().Err(err).Msg("couldn't parse envs")
-  }
-
   // configure zerolog
   zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
   zerolog.SetGlobalLevel(zerolog.InfoLevel)
@@ -35,6 +31,10 @@ func main() {
   }
   if *human {
     log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+  }
+
+  if err := env.Parse(&variables.Cfg); err != nil {
+    log.Fatal().Err(err).Msg("couldn't parse envs")
   }
 
   // configure middleware
